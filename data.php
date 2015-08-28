@@ -4,7 +4,12 @@ $x = 0;
 
 while($x < 3) {
 
-	$nagiosData = file_get_contents('http://nagiosjson.elucas.dev/statusJson.php');
+	$ini = parse_ini_file('datasource.ini');
+	if (!$ini) {
+		die('datasource.ini missing');
+	}
+
+	$nagiosData = file_get_contents($ini['url']);
 	$dataArray = json_decode($nagiosData, true);
 
 	$hosts = $dataArray['hosts'];
