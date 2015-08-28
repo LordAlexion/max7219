@@ -8,6 +8,22 @@ from max7219.font import proportional, CP437_FONT
 device = led.matrix(cascaded=1)
 device.orientation(180)
 
+def hoststatus():
+	test = os.path.isfile('/tmp/downhosts.tmp')
+	if test == True:
+		status = open('/tmp/downhosts.tmp').read()
+		return int(status)
+	elif test == False:
+		return None
+
+def servicestatus():
+	test = os.path.isfile('/tmp/criticalservices.tmp')
+	if test == True:
+		status = open('/tmp/criticalservices.tmp').read()
+		return int(status)
+	elif test == False:
+		return None
+
 # ERROR
 
 def error():
@@ -23,7 +39,7 @@ def excAlert():
 	for _ in range(5):
 		device.invert(1)
 		time.sleep(0.5)
-		sevice.invert(0)
+		device.invert(0)
 		time.sleep(0.5)
 
 
@@ -71,9 +87,9 @@ x = 0
 
 while True:
 
-	hst = int(open('/tmp/downhosts.tmp').read())
-	sst = int(open('/tmp/criticalservices.tmp').read())
-	
+	hst = hoststatus()
+	sst = servicestatus()
+
 	if x == 0: 
 		x = 1
 	else:
